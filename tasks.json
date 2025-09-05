@@ -1,0 +1,35 @@
+{
+  "lundi": [
+    { "text": "Laver les toilettes", "done": false },
+    { "text": "Faire une lessive", "done": false },
+    { "text": "Étendre la lessive", "done": false }
+  ],
+  "mardi": [
+    { "text": "Ranger le salon", "done": false },
+    { "text": "Sortir les poubelles", "done": false }
+  ],
+  "mercredi": [
+    { "text": "Passer l'aspirateur", "done": false },
+    { "text": "Faire une lessive", "done": false }
+  ],
+  "jeudi": [
+    { "text": "Laver les toilettes", "done": false },
+    { "text": "Arroser les plantes", "done": false }
+  ],
+  "vendredi": [
+    { "text": "Préparer le repas du week-end", "done": false },
+    { "text": "Vider le lave-vaisselle", "done": false },
+    { "text": "Ranger la coiffeuse et le bureau", "done": false },
+    { "text": "Faire une lessive", "done": false }
+  ],
+  "samedi": [
+    { "text": "Faire les courses", "done": false },
+    { "text": "Passer l'aspirateur dans les chambres", "done": false },
+    { "text": "Faire l'inventaire du stock et le ranger", "done": false }
+  ],
+  "dimanche": [
+    { "text": "Ranger la maison", "done": false },
+    { "text": "Ranger la coiffeuse et le bureau", "done": false },
+    { "text": "Balayer la terrasse", "done": false }
+  ]
+}
