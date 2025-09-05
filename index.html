@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Tâches Quotidiennes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="day-navigation">
+      <button id="prevDayBtn">⬅</button>
+      <h1 id="dayTitle">📝 Mes tâches pour …</h1>
+      <button id="nextDayBtn">➡</button>
+    </div>
+
+    <div class="buttons">
+      <button id="reloadJsonBtn">🔄 Charger tasks.json</button>
+      <button id="exportBtn">📤 Exporter</button>
+    </div>
+
+    <ul id="taskList"></ul>
+    <div id="errorMessage" class="error"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
