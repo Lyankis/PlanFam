@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planning de tâche familial</title>
-  <link rel="icon" type="image/png" href="taches-quotidiennes.png">
+  <title>Planning de tâches familial</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,13 +15,34 @@
     </div>
 
     <div class="buttons">
-      <button id="reloadJsonBtn">🔄 Charger tasks.json</button>
-      <button id="exportBtn">📤 Exporter</button>
+      <button id="openAddTaskBtn">➕ Ajouter tâche</button>
     </div>
 
     <ul id="taskList"></ul>
     <div id="errorMessage" class="error"></div>
   </div>
+
+  <!-- Popup ajout tâche -->
+  <div id="addTaskModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>➕ Ajouter une tâche</h2>
+      <input type="text" id="newTaskInput" placeholder="Nom de la tâche" />
+      <select id="taskDay">
+        <option value="lundi">Lundi</option>
+        <option value="mardi">Mardi</option>
+        <option value="mercredi">Mercredi</option>
+        <option value="jeudi">Jeudi</option>
+        <option value="vendredi">Vendredi</option>
+        <option value="samedi">Samedi</option>
+        <option value="dimanche">Dimanche</option>
+      </select>
+      <input type="date" id="taskDate" />
+      <label><input type="checkbox" id="taskRecurrent" /> Récurrent</label>
+      <button id="addTaskBtn">Ajouter</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
