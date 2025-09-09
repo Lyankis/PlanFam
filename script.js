@@ -2,28 +2,55 @@ const taskList = document.getElementById("taskList");
 const dayTitle = document.getElementById("dayTitle");
 const prevDayBtn = document.getElementById("prevDayBtn");
 const nextDayBtn = document.getElementById("nextDayBtn");
-const exportBtn = document.getElementById("exportBtn");
-const reloadJsonBtn = document.getElementById("reloadJsonBtn");
 const errorMessage = document.getElementById("errorMessage");
 
-let tasks = [];
-let tasksJson = {};
-const days = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-let currentDayIndex = new Date().getDay(); // commence sur le jour actuel
+const addTaskModal = document.getElementById("addTaskModal");
+const openAddTaskBtn = document.getElementById("openAddTaskBtn");
+const closeModalBtn = document.querySelector(".close");
 
-// -------------------- Fonctions --------------------
+const newTaskInput = document.getElementById("newTaskInput");
+const taskDaySelect = document.getElementById("taskDay");
+const taskDateInput = document.getElementById("taskDate");
+const taskRecurrentCheckbox = document.getElementById("taskRecurrent");
+const addTaskBtn = document.getElementById("addTaskBtn");
 
-// Affiche le titre et les tâches du jour
-function renderTasks() {
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzld0iHmXKE7MjD7EhTWDE3lMTldfoNWhd2qt2luzsXsfauDSQXSn16C3bWm2A6MWI/exec"; // Remplacer par l'URL de déploiement
+const days = ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];
+let currentDayIndex = new Date().getDay();
+
+// ----------------- Modal -----------------
+openAddTaskBtn.addEventListener("click", () => addTaskModal.style.display = "block");
+closeModalBtn.addEventListener("click", () => addTaskModal.style.display = "none");
+window.addEventListener("click", e => { if(e.target === addTaskModal) addTaskModal.style.display = "none"; });
+
+// ----------------- Fetch tasks -----------------
+async function fetchAllTasks() {
+  try {
+    const res = await fetch(WEBAPP_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ action: "get" })
+    });
+    if (!res.ok) throw new Error("Impossible de charger les tâches");
+    return await res.json();
+  } catch(err) {
+    console.error(err);
+    errorMessage.textContent = "Erreur lors du chargement des tâches";
+    return [];
+  }
+}
+
+// ----------------- Render tasks -----------------
+async function renderTasks() {
   taskList.innerHTML = "";
   errorMessage.textContent = "";
-
   const todayName = days[currentDayIndex];
   dayTitle.textContent = `📝 Mes tâches pour ${todayName}`;
 
-  tasks = tasksJson[todayName] || [];
+  const allTasks = await fetchAllTasks();
+  const tasks = allTasks.filter(t => t.jour === todayName);
 
-  if (!tasks || tasks.length === 0) {
+  if(tasks.length === 0){
     const li = document.createElement("li");
     li.textContent = "Aucune tâche pour ce jour ✅";
     li.style.fontStyle = "italic";
@@ -34,89 +61,63 @@ function renderTasks() {
     return;
   }
 
-  tasks.forEach((task, index) => {
+  tasks.forEach(task => {
     const li = document.createElement("li");
-    li.textContent = task.text;
-    if (task.done) li.classList.add("done");
+    li.textContent = `${task.tâche}${task.recurrent ? " 🔁" : ""}${task.date ? " (" + task.date + ")" : ""}`;
+    if(task.done) li.classList.add("done");
 
-    li.addEventListener("click", () => {
-      tasks[index].done = !tasks[index].done;
-      saveToLocalStorage();
+    li.addEventListener("click", async () => {
+      task.done = !task.done;
+      await fetch(WEBAPP_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ action:"update", jour:todayName, tâche:task.tâche, done:task.done })
+      });
       renderTasks();
+    });
+
+    li.addEventListener("contextmenu", async e => {
+      e.preventDefault();
+      if(confirm(`Supprimer "${task.tâche}" ?`)){
+        await fetch(WEBAPP_URL,{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({ action:"delete", jour:todayName, tâche:task.tâche })
+        });
+        renderTasks();
+      }
     });
 
     taskList.appendChild(li);
   });
 }
 
-// Charger le JSON depuis le serveur
-function loadTasksJson() {
-  fetch('tasks.json')
-    .then(res => {
-      if (!res.ok) throw new Error("Impossible de charger tasks.json");
-      return res.json();
-    })
-    .then(data => {
-      tasksJson = data;
-      saveToLocalStorage(); // sauvegarde dans localStorage si vide
-      renderTasks();
-    })
-    .catch(err => {
-      errorMessage.textContent = "Erreur : impossible de charger les tâches depuis tasks.json.";
-      console.error(err);
-    });
-}
+// ----------------- Navigation -----------------
+prevDayBtn.addEventListener("click", () => { currentDayIndex = (currentDayIndex+6)%7; renderTasks(); });
+nextDayBtn.addEventListener("click", () => { currentDayIndex = (currentDayIndex+1)%7; renderTasks(); });
 
-// Sauvegarder dans localStorage
-function saveToLocalStorage() {
-  localStorage.setItem('tasksJson', JSON.stringify(tasksJson));
-}
+// ----------------- Ajouter tâche -----------------
+addTaskBtn.addEventListener("click", async () => {
+  const text = newTaskInput.value.trim();
+  const day = taskDaySelect.value;
+  const date = taskDateInput.value;
+  const recurrent = taskRecurrentCheckbox.checked;
 
-// Charger depuis localStorage ou tasks.json si vide
-function loadTasks() {
-  const localData = localStorage.getItem('tasksJson');
-  if (localData) {
-    tasksJson = JSON.parse(localData);
-    renderTasks();
-  } else {
-    loadTasksJson();
-  }
-}
+  if(!text) return alert("Veuillez saisir le nom de la tâche.");
 
-// Navigation entre les jours
-prevDayBtn.addEventListener("click", () => {
-  currentDayIndex = (currentDayIndex + 6) % 7; // recule d'un jour
+  await fetch(WEBAPP_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ action:"add", jour:day, tâche:text, done:false, date, recurrent })
+  });
+
+  addTaskModal.style.display = "none";
+  newTaskInput.value = "";
+  taskDateInput.value = "";
+  taskRecurrentCheckbox.checked = false;
+
   renderTasks();
 });
 
-nextDayBtn.addEventListener("click", () => {
-  currentDayIndex = (currentDayIndex + 1) % 7; // avance d'un jour
-  renderTasks();
-});
-
-// Bouton recharger tasks.json manuellement
-reloadJsonBtn.addEventListener("click", () => {
-  loadTasksJson();
-});
-
-// Exporter JSON
-exportBtn.addEventListener("click", () => {
-  if (!tasksJson || Object.keys(tasksJson).length === 0) {
-    alert("Aucune liste à exporter !");
-    return;
-  }
-
-  tasksJson[days[currentDayIndex]] = tasks;
-  saveToLocalStorage();
-
-  const blob = new Blob([JSON.stringify(tasksJson, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "mes_taches.json";
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// -------------------- Initialisation --------------------
-loadTasks();
+// ----------------- Initialisation -----------------
+renderTasks();
