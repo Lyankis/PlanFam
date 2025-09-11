@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planning Familial</title>
+  <link rel="stylesheet" href="/frontend/planFam/planFam.css">
+  <link rel="icon" type="image/png" href="../../taches-quotidiennes.png">
+</head>
+
+<body>
+  <!-- Loader global -->
+  <div id="globalLoader">
+    <div class="spinner"></div>
+  </div>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <button id="prevDay">⬅️</button>
+        <h2 id="currentDay">Mes tâches</h2>
+        <button id="nextDay">➡️</button>
+      </div>
+      <button id="openModal">＋ Ajouter</button>
+      <div id="tasksList"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="taskModal" class="modal">
+    <div class="modal-content">
+      <h3>Nouvelle Tâche</h3>
+      <input type="text" id="taskName" placeholder="Nom de la tâche">
+      <input type="date" id="taskDate">
+      <select id="taskRecurrent">
+        <option value="">Aucune</option>
+        <option value="Lundi">Lundi</option>
+        <option value="Mardi">Mardi</option>
+        <option value="Mercredi">Mercredi</option>
+        <option value="Jeudi">Jeudi</option>
+        <option value="Vendredi">Vendredi</option>
+        <option value="Samedi">Samedi</option>
+        <option value="Dimanche">Dimanche</option>
+      </select>
+
+      <div>
+        <button id="saveTask">Ajouter</button>
+        <button id="closeModal">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="/frontend/planFam/planFam.js"></script>
+</body>
+
+</html>
