@@ -1,0 +1,258 @@
+/* Loader global */
+#globalLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(249, 250, 251, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  display: none; /* par défaut caché */
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #e5e7eb;
+  border-top: 6px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === GLOBAL === */
+body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: #f9fafb;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* === CONTAINER === */
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 16px;
+}
+
+/* === CARTE PRINCIPALE === */
+.card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* === HEADER (titre + navigation) === */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #222;
+}
+
+/* Flèches navigation */
+.header button {
+    background: transparent;
+    color: #4f46e5;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.header button:hover {
+    color: #4338ca;
+}
+
+/* === LISTE DES TÂCHES === */
+#tasksList {
+    margin-top: 8px;
+}
+
+.task {
+    background: #f3f4f6; /* gris clair pour uniformité */
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    transition: transform 0.15s ease, background 0.2s ease;
+    cursor: pointer;
+}
+
+.task:hover {
+    transform: scale(1.01);
+}
+
+.task.done {
+    text-decoration: line-through;
+    color: #fff;
+    background: #6ee7b7; /* vert pastel harmonieux */
+    border: none;
+}
+
+.task button {
+    background: #ef4444;
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.task button:hover {
+    background: #dc2626;
+}
+
+/* === AJOUTER TÂCHE === */
+#openModal {
+    display: block;
+    width: auto;
+    padding: 6px 12px;
+    margin: 12px 0;
+    background: #10b981;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#openModal:hover {
+    background: #059669;
+}
+
+/* === MODAL === */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: zoomIn 0.25s ease;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="date"],
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.2s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+    border-color: #4f46e5;
+}
+
+.modal-content button {
+    width: 48%;
+    margin-top: 10px;
+    padding: 10px 0;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#saveTask {
+    background: #10b981;
+    color: #fff;
+}
+
+#saveTask:hover {
+    background: #059669;
+}
+
+#closeModal {
+    background: #ef4444;
+    color: #fff;
+}
+
+#closeModal:hover {
+    background: #dc2626;
+}
+
+/* === TOAST === */
+#toast {
+    visibility: hidden;
+    min-width: 220px;
+    background: #111827;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 12px;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    bottom: 30px;
+    font-size: 14px;
+    transform: translateX(-50%);
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.4s, fadeout 0.4s 2.6s;
+}
+
+@keyframes fadein {
+    from { bottom: 20px; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 20px; opacity: 0; }
+}
