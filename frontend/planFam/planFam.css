@@ -85,7 +85,7 @@ body {
     margin-top: 8px;
 }
 
-.task {
+p {
     background: #f3f4f6; /* gris clair pour uniformité */
     padding: 12px;
     margin: 8px 0;
@@ -224,6 +224,57 @@ body {
 #closeModal:hover {
     background: #dc2626;
 }
+
+/* === MENU OPTIONS (3 points) === */
+.task {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.options-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #6b7280; /* gris neutre */
+    margin-left: 10px;
+}
+
+.options-btn:hover {
+    color: #111827;
+}
+
+/* Menu déroulant */
+.options-menu {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 100;
+    min-width: 120px;
+}
+
+.options-menu button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.options-menu button:hover {
+    background: #f3f4f6;
+}
+
 
 /* === TOAST === */
 #toast {
