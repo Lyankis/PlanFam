@@ -18,18 +18,18 @@ function showToast(message) {
   setTimeout(() => toast.className = toast.className.replace("show", ""), 3000);
 }
 
-// Wrapper pour fetch avec loader
+// Wrapper fetch avec loader
 async function fetchWithLoader(url, options = {}) {
   try {
-    loader.style.display = "flex"; // afficher loader
+    loader.style.display = "flex";
     const res = await fetch(url, options);
     return await res.json();
   } finally {
-    loader.style.display = "none"; // cacher loader
+    loader.style.display = "none";
   }
 }
 
-// Load tasks: either date matches today OR recurring day matches today
+// Charger les tâches
 async function loadTasks() {
   renderDate();
   const container = document.getElementById("tasksList");
@@ -66,12 +66,12 @@ async function loadTasks() {
         }
       };
 
-      // Bouton options (...)
+      // Bouton options
       const optionsBtn = document.createElement("button");
       optionsBtn.className = "options-btn";
       optionsBtn.textContent = "⋮";
 
-      // Menu déroulant
+      // Menu options
       const optionsMenu = document.createElement("div");
       optionsMenu.className = "options-menu";
 
@@ -89,7 +89,6 @@ async function loadTasks() {
           const titre = document.getElementById("taskName").value.trim();
           const date = document.getElementById("taskDate").value;
           const recurrent = document.getElementById("taskRecurrent").value;
-
           if (!titre) { showToast("Le nom est obligatoire !"); return; }
 
           try {
@@ -119,24 +118,19 @@ async function loadTasks() {
         }
       };
 
-      // Ajout des boutons dans le menu
       optionsMenu.appendChild(editBtn);
       optionsMenu.appendChild(delBtn);
 
-      // Toggle menu on click
       optionsBtn.onclick = (e) => {
         e.stopPropagation();
         optionsMenu.style.display = optionsMenu.style.display === "block" ? "none" : "block";
       };
 
-      // Fermer le menu si clic ailleurs
       window.addEventListener("click", () => optionsMenu.style.display = "none");
 
-      // Intégrer dans la tâche
       div.appendChild(optionsBtn);
       div.appendChild(optionsMenu);
       container.appendChild(div);
-
     });
 
   } catch (e) {
@@ -149,7 +143,7 @@ async function loadTasks() {
 document.getElementById("prevDay").onclick = () => { currentDate.setDate(currentDate.getDate() - 1); loadTasks(); };
 document.getElementById("nextDay").onclick = () => { currentDate.setDate(currentDate.getDate() + 1); loadTasks(); };
 
-// MODAL
+// Modal
 const modal = document.getElementById("taskModal");
 const openBtn = document.getElementById("openModal");
 const closeBtn = document.getElementById("closeModal");
@@ -164,16 +158,10 @@ saveBtn.onclick = async () => {
   const titre = document.getElementById("taskName").value.trim();
   const date = document.getElementById("taskDate").value;
   const recurrent = document.getElementById("taskRecurrent").value;
-
-  if (!titre) { showToast("Le nom de la tâche est obligatoire !"); return; }
+  if (!titre) { showToast("Le nom est obligatoire !"); return; }
   if (!date && !recurrent) { showToast("Date ou récurrence obligatoire !"); return; }
 
-  const task = {
-    titre,
-    fait: false,
-    date: date || "",
-    recurrent: recurrent || ""
-  };
+  const task = { titre, fait: false, date: date || "", recurrent: recurrent || "" };
 
   try {
     await fetchWithLoader("http://localhost:3000/tasks", {
@@ -181,7 +169,7 @@ saveBtn.onclick = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(task)
     });
-    modal.style.display = "none";
+    modal.classList.remove("show");
     document.getElementById("taskName").value = "";
     document.getElementById("taskDate").value = "";
     document.getElementById("taskRecurrent").value = "";
@@ -189,6 +177,6 @@ saveBtn.onclick = async () => {
   } catch (e) {
     showToast("Impossible de créer la tâche");
   }
-}
+};
 
 document.addEventListener("DOMContentLoaded", loadTasks);

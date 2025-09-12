@@ -14,14 +14,20 @@
   <div id="globalLoader">
     <div class="spinner"></div>
   </div>
+
+  <!-- Bouton retour vers Dashboard -->
+  <a href="/frontend/dashboard/dashboard.html" id="backDashboard">🏠 Retour au Dashboard</a>
+
   <div class="container">
+
     <div class="card">
       <div class="header">
         <button id="prevDay">⬅️</button>
         <h2 id="currentDay">Mes tâches</h2>
         <button id="nextDay">➡️</button>
       </div>
-      <button id="openModal">＋ Ajouter</button>
+
+      <button id="openModal">＋ Ajouter une tâche</button>
       <div id="tasksList"></div>
     </div>
   </div>
@@ -43,13 +49,14 @@
         <option value="Dimanche">Dimanche</option>
       </select>
 
-      <div>
-        <button id="saveTask">Ajouter</button>
-        <button id="closeModal">Annuler</button>
+      <div class="modal-actions">
+        <button id="saveTask">✅ Ajouter</button>
+        <button id="closeModal">❌ Annuler</button>
       </div>
     </div>
   </div>
 
+  <!-- Toast -->
   <div id="toast"></div>
 
   <script src="/frontend/planFam/planFam.js"></script>

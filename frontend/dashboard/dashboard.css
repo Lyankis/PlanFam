@@ -1,0 +1,157 @@
+/* Loader global */
+#globalLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(249, 250, 251, 0.8);
+  display: none; /* affiché côté JS pendant chargement */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #e5e7eb;
+  border-top: 6px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === GLOBAL === */
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: #f5f7fb;
+  margin: 0;
+  padding: 0;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === CONTAINER / GRID === */
+.container {
+  max-width: 980px;
+  margin: 20px auto;
+  padding: 16px;
+}
+
+.container h2 {
+    position: sticky;
+    top: 0;
+    background: #f5f7fb;  /* fond identique au body */
+    z-index: 10;           /* au-dessus des cartes */
+    padding: 16px;         /* espace autour du texte */
+    margin: 0;
+    border-bottom: 1px solid #ddd; /* séparation visuelle */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  overflow-y: auto; flex: 1;
+}
+
+/* === CARD === */
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.08);
+}
+
+.card.planning {
+  max-height: 320px; /* approx. pour 4 tâches */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scroll pour la vignette planning */
+.card.planning .tasks-container {
+  max-height: 200px; /* ajuster selon le design */
+  overflow-y: auto;
+  padding-right: 4px; /* espace pour scrollbar */
+}
+
+/* optionnel: scrollbar plus fine */
+.card.planning .tasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card.planning .tasks-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.card h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #111827;
+}
+
+/* === TASK PREVIEW (match planFam styles) === */
+/* same visual style as planFam's .task */
+.task {
+  background: #f3f4f6;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  transition: transform 0.12s ease, background 0.15s ease;
+  color: #111827;
+}
+
+/* small right-side icon area for status */
+.task .status {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* done state similar to planFam */
+.task.done {
+  text-decoration: line-through;
+  color: #ffffff;
+  background: #34d399;
+}
+
+/* remove any delete button style here because preview doesn't have one */
+.card .no-tasks {
+  background: #fff3cd;
+  color: #92400e;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .container { padding: 12px; margin: 12px; max-width: 720px; }
+}
+
+/* small tweak for clickable area: don't highlight text when tapping */
+.card, .task { -webkit-tap-highlight-color: rgba(0,0,0,0); }
