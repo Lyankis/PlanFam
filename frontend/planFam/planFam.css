@@ -336,7 +336,17 @@ body {
     }
 }
 
+/* === RESPONSIVE MODE (≤ 768px) === */
 @media (max-width: 768px) {
+    #backDashboard {
+        font-size: 16px;
+        /* réduit */
+        padding: 8px 12px;
+        /* réduit la hauteur */
+        border-radius: 10px;
+        margin: 8px 0;
+    }
+
     body {
         font-size: 18px;
     }
@@ -352,29 +362,32 @@ body {
         height: 100vh;
         display: flex;
         flex-direction: column;
-        padding: 16px;
+        padding: 14px;
     }
 
     .header h2 {
-        font-size: 24px;
+        font-size: 15px;
+        font-weight: bold;
     }
 
     .header button {
-        font-size: 32px;
+        font-size: 15px;
     }
 
     .task {
         font-size: 18px;
-        padding: 20px;
-        margin: 12px 0;
-        border-radius: 16px;
+        padding: 16px;
+        margin: 10px 0;
+        border-radius: 14px;
     }
 
     #openModal {
-        font-size: 20px;
-        padding: 16px;
-        border-radius: 14px;
-        margin: 16px 0;
+        font-size: 18px;
+        /* réduit */
+        padding: 12px;
+        /* réduit la hauteur */
+        border-radius: 12px;
+        margin: 12px 0;
     }
 
     .modal-content {
@@ -383,32 +396,33 @@ body {
         max-width: none;
         border-radius: 0;
         justify-content: center;
-        padding: 24px;
+        padding: 20px;
     }
 
     .modal-content h3 {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .modal-content input,
     .modal-content select {
-        font-size: 18px;
-        padding: 14px;
-        margin: 12px 0;
+        font-size: 16px;
+        padding: 12px;
+        margin: 10px 0;
     }
 
     .modal-actions button {
-        font-size: 18px;
-        padding: 16px;
-        border-radius: 14px;
+        font-size: 16px;
+        padding: 14px;
+        border-radius: 12px;
     }
 
     #toast {
-        font-size: 18px;
-        padding: 16px;
-        bottom: 40px;
+        font-size: 16px;
+        padding: 14px;
+        bottom: 36px;
     }
 }
+
 
 @media (max-width: 430px) {
     .header h2 {
