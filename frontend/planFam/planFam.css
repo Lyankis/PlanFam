@@ -42,6 +42,12 @@ body {
     font-size: 16px;
 }
 
+/* Empêche les éléments de dépasser la largeur de l'écran */
+* {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
 /* === CONTAINER === */
 .container {
     max-width: 600px;
@@ -329,7 +335,6 @@ body {
         margin: 10px 0;
     }
 }
-
 
 @media (max-width: 768px) {
     body {

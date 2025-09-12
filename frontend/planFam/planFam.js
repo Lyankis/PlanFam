@@ -51,15 +51,16 @@ async function loadTasks() {
       const div = document.createElement("div");
       div.className = "task" + (t.fait ? " done" : "");
 
-      // Le texte titre dans un span séparé
+      // Texte tâche dans span séparé
       const titleSpan = document.createElement("span");
-      titleSpan.className = "task-title";   // <-- important
+      titleSpan.className = "task-title";
       titleSpan.textContent = t.titre;
 
       div.appendChild(titleSpan);
 
       // Toggle "fait"
-      div.onclick = async () => {
+      div.onclick = async (e) => {
+        if (e.target.classList.contains("options-btn") || e.target.closest(".options-menu")) return;
         try {
           await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, {
             method: "PUT",
@@ -67,7 +68,7 @@ async function loadTasks() {
             body: JSON.stringify({ fait: !t.fait })
           });
           loadTasks();
-        } catch (e) {
+        } catch {
           showToast("Erreur lors du toggle tâche");
         }
       };
@@ -86,7 +87,27 @@ async function loadTasks() {
       editBtn.textContent = "✏️ Éditer";
       editBtn.onclick = (e) => {
         e.stopPropagation();
-        // ouvrir modal etc.
+        modal.classList.add("show");
+        document.getElementById("taskName").value = t.titre;
+        document.getElementById("taskDate").value = t.date || "";
+        document.getElementById("taskRecurrent").value = t.recurrent || "";
+        saveBtn.onclick = async () => {
+          const titre = document.getElementById("taskName").value.trim();
+          const date = document.getElementById("taskDate").value;
+          const recurrent = document.getElementById("taskRecurrent").value;
+          if (!titre) { showToast("Le nom est obligatoire !"); return; }
+          try {
+            await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ titre, date, recurrent, fait: t.fait })
+            });
+            modal.classList.remove("show");
+            loadTasks();
+          } catch {
+            showToast("Impossible de mettre à jour");
+          }
+        };
       };
 
       // Supprimer
@@ -94,7 +115,12 @@ async function loadTasks() {
       delBtn.textContent = "❌ Supprimer";
       delBtn.onclick = async (e) => {
         e.stopPropagation();
-        // suppression
+        try {
+          await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, { method: "DELETE" });
+          loadTasks();
+        } catch {
+          showToast("Erreur lors de la suppression");
+        }
       };
 
       optionsMenu.appendChild(editBtn);
@@ -111,10 +137,7 @@ async function loadTasks() {
       div.appendChild(optionsMenu);
       container.appendChild(div);
     });
-
-
-  } catch (e) {
-    console.error(e);
+  } catch {
     showToast("Impossible de charger les tâches");
   }
 }
@@ -154,7 +177,7 @@ saveBtn.onclick = async () => {
     document.getElementById("taskDate").value = "";
     document.getElementById("taskRecurrent").value = "";
     loadTasks();
-  } catch (e) {
+  } catch {
     showToast("Impossible de créer la tâche");
   }
 };
