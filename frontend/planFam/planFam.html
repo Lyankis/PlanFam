@@ -16,20 +16,27 @@
   </div>
 
   <!-- Bouton retour vers Dashboard -->
-  <a href="/frontend/dashboard/dashboard.html" id="backDashboard">🏠 Retour au Dashboard</a>
+  <!-- <a href="/frontend/dashboard/dashboard.html" id="backDashboard">🏠 Retour au Dashboard</a> -->
 
   <div class="container">
-
     <div class="card">
-      <div class="header">
-        <button id="prevDay">⬅️</button>
-        <h2 id="currentDay">Mes tâches</h2>
-        <button id="nextDay">➡️</button>
+      <!-- Zone fixe -->
+      <div class="fixed-top">
+        <a href="/frontend/dashboard/dashboard.html" id="backDashboard">🏠 Retour au Dashboard</a>
+
+        <div class="header">
+          <button id="prevDay">⬅️</button>
+          <h2 id="currentDay">Mes tâches</h2>
+          <button id="nextDay">➡️</button>
+        </div>
+
+        <button id="openModal">＋ Ajouter une tâche</button>
       </div>
 
-      <button id="openModal">＋ Ajouter une tâche</button>
-      <div id="tasksList"></div>
+      <!-- Zone scrollable -->
+      <div id="tasksList" class="scrollable"></div>
     </div>
+
   </div>
 
   <!-- Modal -->
