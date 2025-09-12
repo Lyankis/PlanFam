@@ -4,6 +4,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { v4 as uuidv4 } from "uuid";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PORT = process.env.PORT || 3000;
+
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -164,6 +171,17 @@ app.delete("/tasks/:id", async (req, res) => {
     res.status(500).json({ error: "Impossible de supprimer la tâche" });
   }
 });
+
+// === Servir le frontend (public/) ===
+app.use(express.static(path.join(__dirname, "public")));
+
+// Si aucune route API n’est trouvée → renvoyer index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+
 
 // =================== START SERVER ===================
 app.listen(3000, () => console.log("API running on http://localhost:3000"));

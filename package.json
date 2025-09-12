@@ -5,7 +5,8 @@
   "description": "Planning Familial de tâches",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/Lyankis/PlanFam/issues"
   },
-  "homepage": "https://github.com/Lyankis/PlanFam#readme",
+  "homepage": "https://github.com/Lyankis/PlanFam/dashboard/dashboard.html",
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
