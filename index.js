@@ -7,9 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
-
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,7 +17,7 @@ app.use(cors());
 
 // =================== CONFIG ===================
 const SPREADSHEET_ID = "1KWfsKbiy5w2OVRnAD44DcmJf2vMOYIA-AFeNyuhiYyA";
-const SHEET_NAME = "Feuille 1"; // <-- Change ici si besoin
+const SHEET_NAME = "Feuille 1";
 
 const auth = new google.auth.GoogleAuth({
   keyFile: "service-account.json",
@@ -26,7 +26,6 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: "v4", auth });
 
 // =================== HELPERS ===================
-
 // Récupère toutes les tâches depuis la feuille
 async function getRows() {
   const res = await sheets.spreadsheets.values.get({
@@ -34,7 +33,6 @@ async function getRows() {
     range: `${SHEET_NAME}!A:E`
   });
   const rows = res.data.values || [];
-  // On skip header si présent
   return rows.slice(1).map((r) => ({
     id: r[0],
     titre: r[1],
@@ -113,11 +111,10 @@ app.put("/tasks/:id", async (req, res) => {
     let rowIndex = rows.findIndex(r => r[0] === id);
     if (rowIndex === -1) return res.status(404).json({ error: "Tâche non trouvée" });
 
-    // Mettre à jour les valeurs
     rows[rowIndex][1] = titre ?? rows[rowIndex][1];
     rows[rowIndex][2] = fait !== undefined ? (fait ? "TRUE" : "FALSE") : rows[rowIndex][2];
     rows[rowIndex][3] = date ?? rows[rowIndex][3];
-    rows[rowIndex][4] = recurrent !== undefined ? recurrent : rows[rowIndex][4]; // <- nom du jour ou vide
+    rows[rowIndex][4] = recurrent !== undefined ? recurrent : rows[rowIndex][4];
 
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
@@ -172,16 +169,14 @@ app.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-// === Servir le frontend (public/) ===
+// =================== FRONTEND ===================
+// Servir les fichiers statiques
 app.use(express.static(path.join(__dirname, "public")));
 
-// Si aucune route API n’est trouvée → renvoyer index.html
-app.get("*", (req, res) => {
+// Catch-all pour le frontend SPA
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
-
-
 // =================== START SERVER ===================
-app.listen(3000, () => console.log("API running on http://localhost:3000"));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
