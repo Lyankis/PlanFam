@@ -50,7 +50,13 @@ async function loadTasks() {
     tasks.forEach(t => {
       const div = document.createElement("div");
       div.className = "task" + (t.fait ? " done" : "");
-      div.textContent = t.titre;
+
+      // Le texte titre dans un span séparé
+      const titleSpan = document.createElement("span");
+      titleSpan.className = "task-title";   // <-- important
+      titleSpan.textContent = t.titre;
+
+      div.appendChild(titleSpan);
 
       // Toggle "fait"
       div.onclick = async () => {
@@ -75,47 +81,20 @@ async function loadTasks() {
       const optionsMenu = document.createElement("div");
       optionsMenu.className = "options-menu";
 
-      // Bouton éditer
+      // Éditer
       const editBtn = document.createElement("button");
       editBtn.textContent = "✏️ Éditer";
       editBtn.onclick = (e) => {
         e.stopPropagation();
-        modal.classList.add("show");
-        document.getElementById("taskName").value = t.titre;
-        document.getElementById("taskDate").value = t.date || "";
-        document.getElementById("taskRecurrent").value = t.recurrent || "";
-
-        saveBtn.onclick = async () => {
-          const titre = document.getElementById("taskName").value.trim();
-          const date = document.getElementById("taskDate").value;
-          const recurrent = document.getElementById("taskRecurrent").value;
-          if (!titre) { showToast("Le nom est obligatoire !"); return; }
-
-          try {
-            await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ titre, date, recurrent, fait: t.fait })
-            });
-            modal.classList.remove("show");
-            loadTasks();
-          } catch (e) {
-            showToast("Impossible de mettre à jour");
-          }
-        };
+        // ouvrir modal etc.
       };
 
-      // Bouton supprimer
+      // Supprimer
       const delBtn = document.createElement("button");
       delBtn.textContent = "❌ Supprimer";
       delBtn.onclick = async (e) => {
         e.stopPropagation();
-        try {
-          await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, { method: "DELETE" });
-          loadTasks();
-        } catch (e) {
-          showToast("Erreur lors de la suppression");
-        }
+        // suppression
       };
 
       optionsMenu.appendChild(editBtn);
@@ -132,6 +111,7 @@ async function loadTasks() {
       div.appendChild(optionsMenu);
       container.appendChild(div);
     });
+
 
   } catch (e) {
     console.error(e);

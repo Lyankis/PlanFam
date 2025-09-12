@@ -104,9 +104,13 @@ body {
 }
 
 .task.done {
-    text-decoration: line-through;
     background: #34d399;
     color: white;
+}
+
+/* Ligne barrée uniquement sur le titre de la tâche */
+.task.done .task-title {
+    text-decoration: line-through;
 }
 
 /* === BOUTON AJOUTER === */
@@ -398,5 +402,17 @@ body {
         font-size: 18px;
         padding: 16px;
         bottom: 40px;
+    }
+}
+
+@media (max-width: 430px) {
+    .header h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    .header h2 {
+        font-size: 14px;
     }
 }
