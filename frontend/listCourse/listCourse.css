@@ -1,0 +1,514 @@
+/* === LOADER GLOBAL === */
+#globalLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(249, 250, 251, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  display: none;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #e5e7eb;
+  border-top: 6px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* === GLOBAL === */
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* === CONTAINER === */
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 16px;
+  height: 100vh;
+  /* prend toute la hauteur de l'écran */
+  display: flex;
+  flex-direction: column;
+}
+
+/* === CARTE PRINCIPALE === */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* === HEADER === */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header button {
+  background: transparent;
+  color: #4f46e5;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.header button:hover {
+  color: #4338ca;
+}
+
+/* === CARTE LISTE DE COURSES === */
+/* === CONTAINER === */
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 16px;
+  height: 100vh;
+  /* hauteur dynamique */
+  display: flex;
+  flex-direction: column;
+}
+
+/* === SCROLLABLE LISTES === */
+.scrollable {
+  display: flex;
+  flex-direction: column;
+  /* vertical pour mobile/tablette/PC */
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+  padding: 12px 0;
+}
+
+/* === LISTCOURSE === */
+.listCourse {
+  background: #f3f4f6;
+  padding: 20px 16px;
+  /* vertical & horizontal */
+  min-height: 80px;
+  /* hauteur suffisante pour le texte */
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  /* pour le menu contextuel */
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.listCourse:hover {
+  transform: scale(1.02);
+  background: #e5e7eb;
+}
+
+.listCourse.done {
+  background: #34d399;
+  color: white;
+}
+
+.listeCourse-title {
+  flex: 1;
+  word-break: break-word;
+  /* évite de couper le texte */
+  margin-right: 10px;
+  /* espace pour les 3 points */
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* === BOUTON AJOUTER === */
+#openModal {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 14px 0;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#openModal:hover {
+  background: #059669;
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  animation: zoomIn 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content h3 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.modal-actions button {
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+#saveTask {
+  background: #10b981;
+  color: white;
+}
+
+#saveTask:hover {
+  background: #059669;
+}
+
+#closeModal {
+  background: #ef4444;
+  color: white;
+}
+
+#closeModal:hover {
+  background: #dc2626;
+}
+
+/* === BOUTON OPTIONS === */
+.options-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #6b7280;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.options-btn:hover {
+  color: #111827;
+}
+
+/* === MENU CONTEXTUEL === */
+.options-menu {
+  display: none;
+  position: absolute;
+  right: -8px;  /* léger décalage horizontal */
+  top: 36px;    /* léger décalage vertical */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 200;
+  min-width: 140px;
+}
+
+.options-menu.show {
+  display: block;
+  /* affiché lors du clic sur 3 points */
+}
+
+.options-menu button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 16px;
+}
+
+.options-menu button:hover {
+  background: #f3f4f6;
+}
+
+/* === BOUTON RETOUR DASHBOARD === */
+#backDashboard {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  margin: 14px 0;
+  background: #3b82f6;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#backDashboard:hover {
+  background: #2563eb;
+}
+
+/* === TOAST === */
+#toast {
+  visibility: hidden;
+  min-width: 220px;
+  background: #111827;
+  color: #fff;
+  text-align: center;
+  border-radius: 12px;
+  padding: 14px;
+  position: fixed;
+  z-index: 2000;
+  left: 50%;
+  bottom: 30px;
+  font-size: 15px;
+  transform: translateX(-50%);
+}
+
+#toast.show {
+  visibility: visible;
+  animation: fadein 0.4s, fadeout 0.4s 2.6s;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 20px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 20px;
+    opacity: 0;
+  }
+}
+
+/* === RESPONSIVE (≤ 768px) === */
+@media (max-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .card {
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .fixed-top {
+    flex-shrink: 0;
+    background: #fff;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .scrollable {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    gap: 16px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hiden;
+    padding: 12px;
+  }
+
+   .listCourse {
+    min-height: 100px;
+    flex: 0 1 calc((100% - 32px) / 3);
+    box-sizing: border-box;
+    padding: 16px;              /* padding interne propre */
+    display: flex;
+    flex-direction: column;      /* texte en haut */
+    justify-content: flex-start; /* aligné en haut */
+    align-items: flex-start;     /* aligné à gauche */
+  }
+
+  .listeCourse-title {
+    font-size: 18px;
+    margin-bottom: 8px;          /* espace sous le titre */
+    word-break: break-word;
+    width: 100%;                 /* occupe toute la largeur possible */
+  }
+
+  .options-btn {
+    align-self: flex-end;        /* bouton des 3 points en haut à droite */
+    font-size: 20px;
+  }
+
+  .header h2 {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .header button {
+    font-size: 20px;
+  }
+
+  #openModal {
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 10px 0;
+  }
+
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    border-radius: 0;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-content h3 {
+    font-size: 22px;
+  }
+
+  .modal-content input,
+  .modal-content select {
+    font-size: 16px;
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  .modal-actions button {
+    font-size: 16px;
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  #backDashboard {
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin: 8px 0;
+  }
+
+  #toast {
+    font-size: 16px;
+    padding: 14px;
+    bottom: 36px;
+  }
+}
+
+/* === RESPONSIVE (≤ 430px) === */
+@media (max-width: 430px) {
+  .header h2 {
+    font-size: 20px;
+  }
+
+  .listCourse {
+    min-height: 120px;
+    padding: 20px 16px;
+  }
+
+  .listeCourse-title {
+    font-size: 16px;
+  }
+
+  .options-btn {
+    font-size: 18px;
+  }
+}
+
+/* === RESPONSIVE (≤ 380px) === */
+@media (max-width: 380px) {
+  .header h2 {
+    font-size: 14px;
+  }
+}

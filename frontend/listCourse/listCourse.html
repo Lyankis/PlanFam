@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Liste de courses</title>
+  <link rel="stylesheet" href="/frontend/listCourse/listCourse.css" />
+</head>
+
+<body>
+  <div id="globalLoader">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="fixed-top">
+        <a href="/frontend/dashboard/dashboard.html" id="backDashboard">🏠 Retour au Dashboard</a>
+        <div class="header">
+          <h2>Mes listes de courses</h2>
+        </div>
+        <button id="openModal">＋ Ajouter une liste de course</button>
+      </div>
+      <div id="courseList" class="scrollable"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="listCourseModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Nouvelle liste</h3>
+
+      <!-- hidden id for editing -->
+      <input type="hidden" id="editingId" />
+
+      <input type="text" id="listCourseName" placeholder="Nom de la liste" />
+      <input type="date" id="listCourseDate" />
+      <textarea id="listCourseItems" placeholder="Articles (séparés par des virgules)"></textarea>
+
+      <div class="modal-actions">
+        <button id="saveTask">✅ Enregistrer</button>
+        <button id="closeModal">❌ Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="/frontend/listCourse/listCourse.js"></script>
+</body>
+
+</html>
