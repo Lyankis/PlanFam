@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadCards() {
   const cards = [
     { title: "Planning tâches", link: "../planFam/planFam.html" },
-    { title: "Liste courses", link: "#" },
-    { title: "Prise de note", link: "#" },
+    { title: "Liste courses", link: "../listCourse/listCourse.html" },
+    { title: "Prise de note", link: "../priseNote/priseNote.html" },
     { title: "Autre", link: "#" }
   ];
 
