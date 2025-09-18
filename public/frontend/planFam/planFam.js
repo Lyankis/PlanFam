@@ -2,6 +2,11 @@ let currentDate = new Date();
 const weekdays = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 const loader = document.getElementById("globalLoader");
 
+// Détection automatique de l'environnement
+const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? "http://localhost:3000"
+  : "https://planfam.onrender.com";
+
 function formatDate(d) {
   return d.toISOString().slice(0, 10);
 }
@@ -37,7 +42,7 @@ async function loadTasks() {
   const todayDayName = weekdays[currentDate.getDay()];
 
   try {
-    let tasks = await fetchWithLoader(`http://localhost:3000/tasks`);
+    let tasks = await fetchWithLoader(`${API_BASE}/tasks`);
     tasks = tasks.filter(t => t.date === formatDate(currentDate) || t.recurrent === todayDayName);
 
     if (tasks.length === 0) {
@@ -62,7 +67,7 @@ async function loadTasks() {
       div.onclick = async (e) => {
         if (e.target.classList.contains("options-btn") || e.target.closest(".options-menu")) return;
         try {
-          await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, {
+          await fetchWithLoader(`${API_BASE}/tasks/${t.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ fait: !t.fait })
@@ -97,7 +102,7 @@ async function loadTasks() {
           const recurrent = document.getElementById("taskRecurrent").value;
           if (!titre) { showToast("Le nom est obligatoire !"); return; }
           try {
-            await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, {
+            await fetchWithLoader(`${API_BASE}/tasks/${t.id}`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ titre, date, recurrent, fait: t.fait })
@@ -116,7 +121,7 @@ async function loadTasks() {
       delBtn.onclick = async (e) => {
         e.stopPropagation();
         try {
-          await fetchWithLoader(`http://localhost:3000/tasks/${t.id}`, { method: "DELETE" });
+          await fetchWithLoader(`${API_BASE}/tasks/${t.id}`, { method: "DELETE" });
           loadTasks();
         } catch {
           showToast("Erreur lors de la suppression");
@@ -167,7 +172,7 @@ saveBtn.onclick = async () => {
   const task = { titre, fait: false, date: date || "", recurrent: recurrent || "" };
 
   try {
-    await fetchWithLoader("http://localhost:3000/tasks", {
+    await fetchWithLoader(`${API_BASE}/tasks`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(task)
