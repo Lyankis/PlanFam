@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const loader = document.getElementById("globalLoader");
   if (loader) loader.style.display = "flex";
+  API_BASE = "https://planfam.onrender.com";
 
   try {
     await loadCards();
@@ -28,7 +29,7 @@ async function loadCards() {
     const weekdays = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
     const todayName = weekdays[new Date().getDay()];
 
-    const res = await fetch(`http://localhost:3000/tasks`);
+    const res = await fetch(`${API_BASE}/tasks`);
     const tasks = await res.json();
 
     previewTasks = tasks.filter(t => {
@@ -88,7 +89,7 @@ async function loadCards() {
             statusSpan.textContent = t.fait ? "✅" : "";
 
             try {
-              await fetch(`http://localhost:3000/tasks/${t.id}`, {
+              await fetch(`${API_BASE}/tasks/${t.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(t)
@@ -209,7 +210,7 @@ function initModal() {
     try {
       if (loader) loader.style.display = "flex"; // afficher loader
 
-      await fetch(`http://localhost:3000/listcourses/${updated.id}`, {
+      await fetch(`${API_BASE}/listcourses/${updated.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated)
