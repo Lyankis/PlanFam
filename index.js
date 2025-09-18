@@ -20,13 +20,22 @@ const SPREADSHEET_ID = "1KWfsKbiy5w2OVRnAD44DcmJf2vMOYIA-AFeNyuhiYyA";
 const SHEET_TASKS = "PlanFam";
 const SHEET_LISTCOURSE = "ListCourse";
 
+console.log("GOOGLE_SERVICE_ACCOUNT_JSON =", process.env.GOOGLE_SERVICE_ACCOUNT_JSON ? "LOADED" : "UNDEFINED");
+
+let credentials;
+try {
+  credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+} catch (err) {
+  console.error("❌ GOOGLE_SERVICE_ACCOUNT_JSON est invalide ou manquant !");
+  process.exit(1); // Arrête le serveur proprement
+}
+
 const auth = new google.auth.GoogleAuth({
-  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+  credentials,
   scopes: ["https://www.googleapis.com/auth/spreadsheets"]
 });
-const sheets = google.sheets({ version: "v4", auth });
 
-console.log(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+const sheets = google.sheets({ version: "v4", auth });
 
 // =================== HELPERS ===================
 async function getRows(sheetName, range = "A:E") {
