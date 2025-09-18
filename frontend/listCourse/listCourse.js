@@ -1,6 +1,8 @@
 const loader = document.getElementById("globalLoader");
 const API_BASE = "http://localhost:3000";
 
+window.openViewModal = openViewModal;
+
 // === Toast ===
 function showToast(message) {
   const toast = document.getElementById("toast");
@@ -45,11 +47,14 @@ async function loadListCourses() {
       const div = document.createElement("div");
       div.className = "listCourse" + (t.fait ? " done" : "");
 
-      // Titre
+      // Header (titre + options)
+      const header = document.createElement("div");
+      header.className = "listCourse-header";
+
       const titleSpan = document.createElement("span");
       titleSpan.className = "listeCourse-title";
       titleSpan.textContent = t.title || "(sans titre)";
-      div.appendChild(titleSpan);
+      header.appendChild(titleSpan);
 
       // Bouton options
       const optionsBtn = document.createElement("button");
@@ -85,36 +90,33 @@ async function loadListCourses() {
 
       optionsMenu.appendChild(editBtn);
       optionsMenu.appendChild(delBtn);
+      header.appendChild(optionsBtn);
+      div.appendChild(header);
+      div.appendChild(optionsMenu);
+
+      // Description en bas
+      if (t.description) {
+        const itemsSpan = document.createElement("div");
+        itemsSpan.className = "listeCourse-items";
+        itemsSpan.textContent = t.description;
+        div.appendChild(itemsSpan);
+      }
 
       // Gestion du clic sur le bouton options
       optionsBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        // Ferme tous les autres menus
         document.querySelectorAll(".options-menu").forEach(menu => {
           if (menu !== optionsMenu) menu.classList.remove("show");
         });
-        // Toggle menu actuel
         optionsMenu.classList.toggle("show");
       });
 
-      // Toggle fait
-      div.addEventListener("click", async (e) => {
+      // Ouvrir modal lecture au clic sur la carte
+      div.addEventListener("click", (e) => {
         if (e.target.classList.contains("options-btn") || e.target.closest(".options-menu")) return;
-        try {
-          await fetchWithLoader(`${API_BASE}/listcourses/${t.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fait: !t.fait })
-          });
-          loadListCourses();
-        } catch (err) {
-          console.error(err);
-          showToast("Erreur lors du toggle");
-        }
+        openViewModal(t);
       });
 
-      div.appendChild(optionsBtn);
-      div.appendChild(optionsMenu);
       container.appendChild(div);
     });
 
@@ -138,10 +140,57 @@ const nameInput = document.getElementById("listCourseName");
 const dateInput = document.getElementById("listCourseDate");
 const itemsInput = document.getElementById("listCourseItems");
 
+// === Modal Lecture/Écriture ===
+const viewModal = document.getElementById("viewModal");
+const closeViewModal = document.getElementById("closeViewModal");
+const cancelView = document.getElementById("cancelView");
+const saveView = document.getElementById("saveView");
+const viewId = document.getElementById("viewId");
+const viewTitleInput = document.getElementById("viewTitleInput");
+const viewDescriptionInput = document.getElementById("viewDescriptionInput");
+
+function openViewModal(item) {
+  viewId.value = item.id;
+  viewTitleInput.value = item.title || "";
+  viewDescriptionInput.value = item.description || "";
+  viewModal.classList.add("show");
+}
+
+// closeViewModal.addEventListener("click", () => viewModal.classList.remove("show"));
+cancelView.addEventListener("click", () => viewModal.classList.remove("show"));
+window.addEventListener("click", (e) => {
+  if (e.target === viewModal) viewModal.classList.remove("show");
+});
+
+saveView.addEventListener("click", async () => {
+  const id = viewId.value;
+  const title = viewTitleInput.value.trim();
+  const description = viewDescriptionInput.value.trim();
+
+  if (!title) { showToast("Le titre est obligatoire"); return; }
+
+  try {
+    await fetchWithLoader(`${API_BASE}/listcourses/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description })
+    });
+    showToast("Liste mise à jour !");
+    viewModal.classList.remove("show");
+    loadListCourses();
+  } catch (err) {
+    console.error(err);
+    showToast("Erreur lors de la mise à jour");
+  }
+});
+
 function openModalForEdit(item) {
   editingIdInput.value = item.id;
   nameInput.value = item.title || "";
-  dateInput.value = (item.dateCrea || "").slice(0, 10);
+
+  // Met la date de création dans le champ si elle existe
+  dateInput.value = item.dateCrea ? item.dateCrea.slice(0, 10) : "";
+
   itemsInput.value = item.description || "";
   document.getElementById("modalTitle").textContent = "Modifier la liste";
   modal.classList.add("show");

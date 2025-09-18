@@ -6,7 +6,8 @@
   width: 100%;
   height: 100%;
   background: rgba(249, 250, 251, 0.8);
-  display: none; /* affiché côté JS pendant chargement */
+  display: none;
+  /* affiché côté JS pendant chargement */
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -22,8 +23,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* === GLOBAL === */
@@ -45,20 +51,25 @@ body {
 }
 
 .container h2 {
-    position: sticky;
-    top: 0;
-    background: #f5f7fb;  /* fond identique au body */
-    z-index: 10;           /* au-dessus des cartes */
-    padding: 16px;         /* espace autour du texte */
-    margin: 0;
-    border-bottom: 1px solid #ddd; /* séparation visuelle */
+  position: sticky;
+  top: 0;
+  background: #f5f7fb;
+  /* fond identique au body */
+  z-index: 10;
+  /* au-dessus des cartes */
+  padding: 16px;
+  /* espace autour du texte */
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  /* séparation visuelle */
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
-  overflow-y: auto; flex: 1;
+  overflow-y: auto;
+  flex: 1;
 }
 
 /* === CARD === */
@@ -78,16 +89,19 @@ body {
 }
 
 .card.planning {
-  max-height: 320px; /* approx. pour 4 tâches */
+  max-height: 320px;
+  /* approx. pour 4 tâches */
   display: flex;
   flex-direction: column;
 }
 
 /* Scroll pour la vignette planning */
 .card.planning .tasks-container {
-  max-height: 200px; /* ajuster selon le design */
+  max-height: 200px;
+  /* ajuster selon le design */
   overflow-y: auto;
-  padding-right: 4px; /* espace pour scrollbar */
+  padding-right: 4px;
+  /* espace pour scrollbar */
 }
 
 /* optionnel: scrollbar plus fine */
@@ -96,7 +110,7 @@ body {
 }
 
 .card.planning .tasks-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
@@ -147,11 +161,221 @@ body {
   text-align: center;
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; }
-  .container { padding: 12px; margin: 12px; max-width: 720px; }
+/* Container horizontal pour listes de courses */
+/* Container horizontal pour listes de courses */
+.courses-preview .courses-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 480px;   /* 4 lignes max */
+  overflow-y: auto;    /* scroll vertical si trop de lignes */
+  padding: 8px 0;
 }
 
-/* small tweak for clickable area: don't highlight text when tapping */
-.card, .task { -webkit-tap-highlight-color: rgba(0,0,0,0); }
+.course-item {
+  flex: 1 1 calc(20% - 8px); /* max 5 par ligne */
+  min-width: 120px;           
+  max-width: 100%;            /* limite à la largeur disponible */
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  background: #f3f4f6;
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #111827;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.course-item:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.course-item h4 {
+  font-size: 14px;   /* titre plus petit */
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  overflow: hidden;         /* couper si trop long */
+  text-overflow: ellipsis;  /* ... à la fin */
+  white-space: nowrap;      /* une seule ligne */
+  width: 100%;              /* occupe toute la largeur du bloc */
+  box-sizing: border-box;
+}
+
+.course-item p {
+  font-size: 12px;  
+  color: #6b7280;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;      /* une seule ligne */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.course-item:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+/* === MODAL === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px); /* flou derrière */
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 24px 50px 24px 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;  /* plus large */
+  box-shadow: 0 8px 28px rgba(16, 24, 40, 0.15);
+  animation: fadeIn 0.25s ease;
+  position: relative;
+}
+
+/* Header modal */
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  color: #111827;
+  text-align: center;
+}
+
+/* Inputs + textarea */
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #4f46e5;
+}
+
+/* description agrandie */
+.modal-content textarea {
+  min-height: 120px;  /* plus haut par défaut */
+  resize: vertical;   /* redimensionnable si besoin */
+}
+
+/* Boutons */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.modal-content button {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px);
+}
+
+.modal-content .btn-primary {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.modal-content .btn-primary:hover {
+  background-color: #3730a3;
+}
+
+.modal-content .btn-secondary {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.modal-content .btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* bouton X */
+.close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+.close:hover {
+  color: #111827;
+}
+
+/* animation d’apparition */
+@keyframes fadeIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 12px;
+    margin: 12px;
+    max-width: 720px;
+  }
+
+  .course-item {
+    flex: 1 1 calc(50% - 8px);
+    /* 2 par ligne sur petits écrans */
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 500px) {
+  .course-item {
+    flex: 1 1 100%;
+    /* 1 par ligne sur très petit écran */
+  }
+}
+
+  /* small tweak for clickable area: don't highlight text when tapping */
+  .card,
+  .task {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }

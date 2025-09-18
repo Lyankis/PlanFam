@@ -118,26 +118,23 @@ body {
 
 /* === LISTCOURSE === */
 .listCourse {
-  background: #f3f4f6;
-  padding: 20px 16px;
-  /* vertical & horizontal */
-  min-height: 80px;
-  /* hauteur suffisante pour le texte */
-  border-radius: 14px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 500;
+  flex-direction: column;
+  /* contenu en colonne */
   position: relative;
-  /* pour le menu contextuel */
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  min-height: 120px;
+  /* espace pour titre + description */
 }
 
 .listCourse:hover {
   transform: scale(1.02);
-  background: #e5e7eb;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 .listCourse.done {
@@ -145,14 +142,38 @@ body {
   color: white;
 }
 
+/* === HEADER (titre + bouton options) === */
+.listCourse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 .listeCourse-title {
-  flex: 1;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.listCourse.done .listeCourse-title {
+  color: #fff;
+}
+
+/* === DESCRIPTION === */
+.listeCourse-items {
+  font-size: 14px;
+  font-weight: 400;
+  color: #4b5563;
+  margin-top: auto;
+  /* pousse vers le bas */
+  white-space: pre-wrap;
   word-break: break-word;
-  /* évite de couper le texte */
-  margin-right: 10px;
-  /* espace pour les 3 points */
-  font-size: 16px;
-  font-weight: 500;
+}
+
+.listCourse.done .listeCourse-items {
+  color: #e5e7eb;
 }
 
 /* === BOUTON AJOUTER === */
@@ -256,10 +277,8 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 20px;
   color: #6b7280;
-  flex-shrink: 0;
-  position: relative;
 }
 
 .options-btn:hover {
@@ -270,8 +289,10 @@ body {
 .options-menu {
   display: none;
   position: absolute;
-  right: -8px;  /* léger décalage horizontal */
-  top: 36px;    /* léger décalage vertical */
+  right: -8px;
+  /* léger décalage horizontal */
+  top: 36px;
+  /* léger décalage vertical */
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -342,6 +363,83 @@ body {
   animation: fadein 0.4s, fadeout 0.4s 2.6s;
 }
 
+/* === MODAL VIEW (lecture/écriture) === */
+#viewModal .modal-content {
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+#viewModal h3 {
+  font-size: 16px;
+  /* plus petit */
+  font-weight: 600;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+/* Inputs */
+#viewModal input,
+#viewModal textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+/* Champ description plus grand */
+#viewDescriptionInput {
+  min-height: 150px;
+  /* augmente la hauteur */
+  resize: vertical;
+  /* l’utilisateur peut agrandir si besoin */
+}
+
+/* Actions */
+#viewModal .modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#viewModal .modal-actions button {
+  flex: 1;
+  padding: 8px 10px;
+  /* plus petit */
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+/* Bouton enregistrer */
+#saveView {
+  background: #10b981;
+  color: #fff;
+}
+
+#saveView:hover {
+  background: #059669;
+}
+
+/* Bouton fermer */
+#cancelView {
+  background: #ef4444;
+  color: #fff;
+}
+
+#cancelView:hover {
+  background: #dc2626;
+}
+
 @keyframes fadein {
   from {
     bottom: 20px;
@@ -399,7 +497,7 @@ body {
   .scrollable {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 16px;
     flex: 1;
     overflow-y: auto;
@@ -407,26 +505,33 @@ body {
     padding: 12px;
   }
 
-   .listCourse {
+  .listCourse {
     min-height: 100px;
     flex: 0 1 calc((100% - 32px) / 3);
     box-sizing: border-box;
-    padding: 16px;              /* padding interne propre */
+    padding: 16px;
+    /* padding interne propre */
     display: flex;
-    flex-direction: column;      /* texte en haut */
-    justify-content: flex-start; /* aligné en haut */
-    align-items: flex-start;     /* aligné à gauche */
+    flex-direction: column;
+    /* texte en haut */
+    justify-content: flex-start;
+    /* aligné en haut */
+    align-items: flex-start;
+    /* aligné à gauche */
   }
 
   .listeCourse-title {
     font-size: 18px;
-    margin-bottom: 8px;          /* espace sous le titre */
+    margin-bottom: 8px;
+    /* espace sous le titre */
     word-break: break-word;
-    width: 100%;                 /* occupe toute la largeur possible */
+    width: 100%;
+    /* occupe toute la largeur possible */
   }
 
   .options-btn {
-    align-self: flex-end;        /* bouton des 3 points en haut à droite */
+    align-self: flex-end;
+    /* bouton des 3 points en haut à droite */
     font-size: 20px;
   }
 

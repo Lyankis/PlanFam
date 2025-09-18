@@ -45,6 +45,24 @@
     </div>
   </div>
 
+  <!-- Modal Lecture/Écriture -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <h3>Éditer la liste</h3>
+
+      <input type="hidden" id="viewId" />
+
+      <input type="text" id="viewTitleInput" placeholder="Titre de la liste" />
+      <textarea id="viewDescriptionInput" placeholder="Description / articles"></textarea>
+
+      <div class="modal-actions">
+        <button id="saveView">💾 Enregistrer</button>
+        <button id="cancelView">❌ Fermer</button>
+      </div>
+    </div>
+  </div>
+
+
   <div id="toast"></div>
 
   <script src="/frontend/listCourse/listCourse.js"></script>
