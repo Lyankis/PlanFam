@@ -45,7 +45,7 @@ async function loadCards() {
   // --- Récupération des listes de courses ---
   let listCourses = [];
   try {
-    const res = await fetch(`http://localhost:3000/listcourses`);
+    const res = await fetch(`${API_BASE}/listcourses`);
     listCourses = await res.json();
   } catch (err) {
     console.error("Erreur fetch listCourses:", err);
