@@ -1,3 +1,9 @@
+/* Empêche tout scroll horizontal global */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 /* Loader global */
 #globalLoader {
   position: fixed;
@@ -23,13 +29,8 @@
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* === GLOBAL === */
@@ -48,28 +49,29 @@ body {
   max-width: 980px;
   margin: 20px auto;
   padding: 16px;
+  box-sizing: border-box;
 }
 
 .container h2 {
   position: sticky;
   top: 0;
   background: #f5f7fb;
-  /* fond identique au body */
   z-index: 10;
-  /* au-dessus des cartes */
   padding: 16px;
-  /* espace autour du texte */
   margin: 0;
   border-bottom: 1px solid #ddd;
-  /* séparation visuelle */
+  word-break: break-word;
 }
 
+/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   overflow-y: auto;
   flex: 1;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* === CARD === */
@@ -81,6 +83,8 @@ body {
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -90,21 +94,17 @@ body {
 
 .card.planning {
   max-height: 320px;
-  /* approx. pour 4 tâches */
   display: flex;
   flex-direction: column;
 }
 
-/* Scroll pour la vignette planning */
+/* Scroll pour planning */
 .card.planning .tasks-container {
   max-height: 200px;
-  /* ajuster selon le design */
   overflow-y: auto;
   padding-right: 4px;
-  /* espace pour scrollbar */
 }
 
-/* optionnel: scrollbar plus fine */
 .card.planning .tasks-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -118,10 +118,10 @@ body {
   margin: 0 0 10px 0;
   font-size: 18px;
   color: #111827;
+  word-break: break-word;
 }
 
-/* === TASK PREVIEW (match planFam styles) === */
-/* same visual style as planFam's .task */
+/* === TASK === */
 .task {
   background: #f3f4f6;
   padding: 12px 14px;
@@ -134,23 +134,25 @@ body {
   font-weight: 500;
   transition: transform 0.12s ease, background 0.15s ease;
   color: #111827;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
-/* small right-side icon area for status */
 .task .status {
   margin-left: 12px;
   font-size: 14px;
   color: #6b7280;
 }
 
-/* done state similar to planFam */
 .task.done {
   text-decoration: line-through;
   color: #ffffff;
   background: #34d399;
 }
 
-/* remove any delete button style here because preview doesn't have one */
 .card .no-tasks {
   background: #fff3cd;
   color: #92400e;
@@ -161,22 +163,20 @@ body {
   text-align: center;
 }
 
-/* Container horizontal pour listes de courses */
-/* Container horizontal pour listes de courses */
+/* Courses preview */
 .courses-preview .courses-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  max-height: 480px;   /* 4 lignes max */
-  overflow-y: auto;    /* scroll vertical si trop de lignes */
+  max-height: 480px;
+  overflow-y: auto;
   padding: 8px 0;
 }
 
 .course-item {
-  flex: 1 1 calc(20% - 8px); /* max 5 par ligne */
-  min-width: 120px;           
-  max-width: 100%;            /* limite à la largeur disponible */
-  height: auto;
+  flex: 1 1 calc(20% - 8px);
+  min-width: 120px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -189,6 +189,10 @@ body {
   font-weight: 500;
   color: #111827;
   transition: transform 0.15s ease, background 0.15s ease;
+  box-sizing: border-box;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .course-item:hover {
@@ -196,31 +200,17 @@ body {
   transform: translateY(-2px);
 }
 
-.course-item h4 {
-  font-size: 14px;   /* titre plus petit */
-  margin: 0 0 4px 0;
-  font-weight: 600;
-  overflow: hidden;         /* couper si trop long */
-  text-overflow: ellipsis;  /* ... à la fin */
-  white-space: nowrap;      /* une seule ligne */
-  width: 100%;              /* occupe toute la largeur du bloc */
-  box-sizing: border-box;
-}
-
+.course-item h4,
 .course-item p {
-  font-size: 12px;  
-  color: #6b7280;
-  margin: 0;
+  font-size: 14px;
+  margin: 0 0 4px 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;      /* une seule ligne */
+  white-space: normal;
   width: 100%;
   box-sizing: border-box;
-}
-
-.course-item:hover {
-  background: #e5e7eb;
-  transform: translateY(-2px);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* === MODAL === */
@@ -232,7 +222,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(4px); /* flou derrière */
+  backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -247,10 +237,13 @@ body {
   padding: 24px 50px 24px 30px;
   border-radius: 16px;
   width: 90%;
-  max-width: 500px;  /* plus large */
+  max-width: 500px;
   box-shadow: 0 8px 28px rgba(16, 24, 40, 0.15);
   animation: fadeIn 0.25s ease;
   position: relative;
+  box-sizing: border-box;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Header modal */
@@ -260,6 +253,7 @@ body {
   font-size: 20px;
   color: #111827;
   text-align: center;
+  word-break: break-word;
 }
 
 /* Inputs + textarea */
@@ -273,6 +267,7 @@ body {
   border-radius: 10px;
   outline: none;
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .modal-content input:focus,
@@ -280,13 +275,12 @@ body {
   border-color: #4f46e5;
 }
 
-/* description agrandie */
 .modal-content textarea {
-  min-height: 120px;  /* plus haut par défaut */
-  resize: vertical;   /* redimensionnable si besoin */
+  min-height: 120px;
+  resize: vertical;
 }
 
-/* Boutons */
+/* Buttons */
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
@@ -326,7 +320,7 @@ body {
   background-color: #d1d5db;
 }
 
-/* bouton X */
+/* Close button */
 .close {
   position: absolute;
   top: 14px;
@@ -341,12 +335,15 @@ body {
   color: #111827;
 }
 
-/* animation d’apparition */
 @keyframes fadeIn {
   from { transform: translateY(-20px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
 
+/* Clickable tweak */
+.card, .task {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
 /* === RESPONSIVE === */
 @media (max-width: 900px) {
@@ -362,7 +359,6 @@ body {
 
   .course-item {
     flex: 1 1 calc(50% - 8px);
-    /* 2 par ligne sur petits écrans */
     min-width: 100px;
   }
 }
@@ -370,12 +366,17 @@ body {
 @media (max-width: 500px) {
   .course-item {
     flex: 1 1 100%;
-    /* 1 par ligne sur très petit écran */
   }
 }
 
-  /* small tweak for clickable area: don't highlight text when tapping */
-  .card,
-  .task {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+@media (max-width: 445px) {
+  .course-item {
+    flex: 1 1 100%;
+    min-width: 0;
   }
+
+  .modal-content {
+    width: 95%;
+    padding: 16px 20px;
+  }
+}
