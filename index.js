@@ -26,6 +26,8 @@ const auth = new google.auth.GoogleAuth({
 });
 const sheets = google.sheets({ version: "v4", auth });
 
+console.log(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+
 // =================== HELPERS ===================
 async function getRows(sheetName, range = "A:E") {
   const res = await sheets.spreadsheets.values.get({
