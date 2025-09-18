@@ -108,6 +108,11 @@ async function loadCards() {
         p.textContent = "Aucune tâche aujourd’hui";
         div.appendChild(p);
       }
+
+      // ✅ Ajout du clic sur toute la carte → ouvre planFam.html
+      div.addEventListener("click", () => {
+        window.location.href = card.link;
+      });
     }
 
     // --- Liste de courses (aperçu) ---
