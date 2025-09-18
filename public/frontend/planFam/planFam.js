@@ -1,11 +1,12 @@
 let currentDate = new Date();
 const weekdays = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 const loader = document.getElementById("globalLoader");
+API_BASE = "https://planfam.onrender.com";
 
 // Détection automatique de l'environnement
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:3000"
-  : "https://planfam.onrender.com";
+// const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+//   ? "http://localhost:3000"
+//   : "https://planfam.onrender.com";
 
 function formatDate(d) {
   return d.toISOString().slice(0, 10);
