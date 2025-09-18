@@ -21,7 +21,7 @@ const SHEET_TASKS = "PlanFam";
 const SHEET_LISTCOURSE = "ListCourse";
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, "backend/service-account.json"),
+  credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"]
 });
 const sheets = google.sheets({ version: "v4", auth });
